@@ -1,0 +1,16 @@
+PODS:
+  - lbelvale2016 (0.1.0)
+
+DEPENDENCIES:
+  - lbelvale2016 (from `../`)
+
+EXTERNAL SOURCES:
+  lbelvale2016:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  lbelvale2016: 99229aa9e1140ca6715f1903a87db2301a0fe2d1
+
+PODFILE CHECKSUM: aa57774bd4b49bd148a0f36dc66b47520ba3c8c5
+
+COCOAPODS: 1.0.1

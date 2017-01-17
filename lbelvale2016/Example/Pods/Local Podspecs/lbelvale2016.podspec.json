@@ -1,0 +1,30 @@
+{
+  "name": "lbelvale2016",
+  "version": "0.1.0",
+  "summary": "Piscine-IOS D08",
+  "description": "Piscine-IOS D08 create and save articles using CoreData\ncreate by lbelvale 42 student.",
+  "homepage": "https://github.com/lbelvale42/lbelvale2016",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "lbelvalle": "lbelvale@student.42.fr"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/lbelvale2016.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": [
+    "lbelvale2016/Classes/Article.swift",
+    "lbelvale2016/Classes/ArticleManager.swift",
+    "lbelvale2016/Classes/article.xcdatamodeld"
+  ],
+  "frameworks": [
+    "UIKit",
+    "CoreData"
+  ]
+}

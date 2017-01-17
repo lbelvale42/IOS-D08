@@ -1,0 +1,6 @@
+framework module lbelvale2016 {
+  umbrella header "lbelvale2016-umbrella.h"
+
+  export *
+  module * { export * }
+}

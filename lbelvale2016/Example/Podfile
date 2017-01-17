@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'lbelvale2016_Example' do
+  pod 'lbelvale2016', :path => '../'
+
+  target 'lbelvale2016_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
