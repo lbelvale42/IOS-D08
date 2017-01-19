@@ -9,23 +9,23 @@
 import UIKit
 import CoreData
 
-public class ArticleManager {
+open class ArticleManager {
     
-    public var managedObjectContext: NSManagedObjectContext
+    open var managedObjectContext: NSManagedObjectContext
     
     public init() {
-        let bundle = NSBundle.init(forClass: lbelvale2016.Article)
-        let url = bundle.URLForResource("article", withExtension: "momd")!
-        let mom = NSManagedObjectModel(contentsOfURL: url)
+        let bundle = Bundle.init(for: lbelvale2016.Article)
+        let url = bundle.url(forResource: "article", withExtension: "momd")!
+        let mom = NSManagedObjectModel(contentsOf: url)
         let psc = NSPersistentStoreCoordinator(managedObjectModel: mom!)
-        managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = psc
         
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let docURL = urls[urls.endIndex-1]
-        let storeURL = docURL.URLByAppendingPathComponent("article.xcdatamodeld")
+        let storeURL = docURL.appendingPathComponent("article.xcdatamodeld")
         do {
-            try psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeURL, options: nil)
+            try psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: nil)
         } catch {
             print("Error migrating store: \(error)")
         }
@@ -33,23 +33,23 @@ public class ArticleManager {
     }
     
     
-    public func newArticle() -> Article {
+    open func newArticle() -> Article {
         var article: Article!
         let context = self.managedObjectContext
-        context.performBlockAndWait {
-            let ent = NSEntityDescription.entityForName("Article", inManagedObjectContext: context)
-            article = Article(entity: ent!, insertIntoManagedObjectContext: context)
+        context.performAndWait {
+            let ent = NSEntityDescription.entity(forEntityName: "Article", in: context)
+            article = Article(entity: ent!, insertInto: context)
         }
         return article
     }
     
-    public func getAllArticles() -> [Article] {
+    open func getAllArticles() -> [Article] {
         var array: [Article]!
-        let fetchRequest = NSFetchRequest()
-        let entityDescription = NSEntityDescription.entityForName("Article", inManagedObjectContext: self.managedObjectContext)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: self.managedObjectContext)
         fetchRequest.entity = entityDescription
         do {
-            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
+            let result = try self.managedObjectContext.fetch(fetchRequest)
             if (result.count > 0) {
                 let result = result as! [Article]
                 array = result
@@ -65,14 +65,14 @@ public class ArticleManager {
         return array
     }
     
-    public func getArticles(withLang lang:String) -> [Article] {
+    open func getArticles(withLang lang:String) -> [Article] {
         var array: [Article]!
-        let fetchRequest = NSFetchRequest()
-        let entityDescription = NSEntityDescription.entityForName("Article", inManagedObjectContext: self.managedObjectContext)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: self.managedObjectContext)
         fetchRequest.entity = entityDescription
         fetchRequest.predicate = NSPredicate(format: "language == %@", lang)
         do {
-            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
+            let result = try self.managedObjectContext.fetch(fetchRequest)
             if (result.count > 0) {
                 let result = result as! [Article]
                 array = result
@@ -88,14 +88,14 @@ public class ArticleManager {
         return array
     }
     
-    public func getArticles(containString str: String) -> [Article] {
+    open func getArticles(containString str: String) -> [Article] {
         var array: [Article]!
-        let fetchRequest = NSFetchRequest()
-        let entityDescription = NSEntityDescription.entityForName("Article", inManagedObjectContext: self.managedObjectContext)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: self.managedObjectContext)
         fetchRequest.entity = entityDescription
         fetchRequest.predicate = NSPredicate(format: "title contains %@ || content contains %@", str, str)
         do {
-            let result = try self.managedObjectContext.executeFetchRequest(fetchRequest)
+            let result = try self.managedObjectContext.fetch(fetchRequest)
             if (result.count > 0) {
                 let result = result as! [Article]
                 array = result
@@ -111,12 +111,12 @@ public class ArticleManager {
         return array
     }
     
-    public func removeArticle(article : Article) {
+    open func removeArticle(_ article : Article) {
         let context = self.managedObjectContext
-        context.performBlockAndWait {
+        context.performAndWait {
             do {
                 let context = self.managedObjectContext
-                context.deleteObject(article)
+                context.delete(article)
                 try context.save()
                 print("article deleted")
             } catch (let error) {
@@ -125,10 +125,10 @@ public class ArticleManager {
         }
     }
     
-    public func save() {
+    open func save() {
         let context = self.managedObjectContext
         
-        context.performBlockAndWait {
+        context.performAndWait {
             do {
                 let context = self.managedObjectContext
                 try context.save()
